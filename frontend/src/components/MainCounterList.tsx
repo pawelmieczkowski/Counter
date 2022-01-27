@@ -1,6 +1,16 @@
 import React, {useState} from "react";
 import {ICounter} from "../pages/CounterPage";
-import {Accordion, Button, Container, Form, Table} from "react-bootstrap";
+import {
+    Accordion,
+    Button,
+    Container,
+    Form,
+    OverlayTrigger,
+    Popover,
+    PopoverBody,
+    PopoverHeader,
+    Table
+} from "react-bootstrap";
 
 export const MainCounterList = ({
                                     counters,
@@ -34,8 +44,25 @@ export const MainCounterList = ({
             method: 'PUT',
             headers: {}
         });
-        refresh(await response.json());
+        refresh(await response);
     }
+
+    const handleDeleteCounter = async (id: number | undefined) => {
+        let response = await fetch(`http://localhost:8080/api/v1/counters/${id}`, {
+            method: 'DELETE',
+            headers: {}
+        });
+        refresh(await response);
+    }
+
+    const popover = (id: number | undefined) => (
+        <Popover>
+            <PopoverHeader>Settings</PopoverHeader>
+            <PopoverBody>
+                <Button onClick={() => handleDeleteCounter(id)}>Delete counter</Button>
+            </PopoverBody>
+        </Popover>
+    )
 
     return (
         <Container className={"w-100 py-4"} fluid style={{background: "#191c24", borderRadius: "5px"}}>
@@ -54,7 +81,11 @@ export const MainCounterList = ({
                         <td style={{
                             textAlign: "right"
                         }}>
-                            <Button onClick={() => handleCounterSubmit(c.id)}>+1</Button>
+                            <Button className={"me-2"} onClick={() => handleCounterSubmit(c.id)}>+1</Button>
+                            <OverlayTrigger trigger="click" rootClose placement="left" overlay={popover(c.id)}
+                                            defaultShow={false}>
+                                <Button variant="secondary"><i className="bi bi-gear"/></Button>
+                            </OverlayTrigger>
                         </td>
                     </tr>
                 ))}

@@ -22,8 +22,8 @@ public class Counter {
     private Long count;
     private String color;
     private final LocalDateTime creationDate;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "counter_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "counter_id", insertable = false, updatable = false)
     private List<CounterEntry> counterEntries;
 
     public Counter() {

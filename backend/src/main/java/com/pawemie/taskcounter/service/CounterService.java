@@ -35,4 +35,8 @@ public class CounterService {
     public List<Counter> getAllCounters() {
         return counterRepository.findAll();
     }
+
+    public void deleteCounter(Long id){
+        counterRepository.deleteById(id);
+    }
 }

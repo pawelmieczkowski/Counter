@@ -1,15 +1,8 @@
 import {Nav, Container, Row, Navbar} from "react-bootstrap";
-import {useEffect} from "react";
 import './MenuBar.css'
 
 
 export const MenuBar = () => {
-
-    useEffect(() => {
-        {
-            console.log(window.location.pathname)
-        }
-    }, [])
 
     return (
         <Container className={"h-100 ps-0"} fluid style={{}}>

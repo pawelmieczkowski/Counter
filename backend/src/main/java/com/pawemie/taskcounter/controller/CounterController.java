@@ -24,6 +24,12 @@ public class CounterController {
         return counterService.updateCounter(id);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteCounter(@PathVariable Long id) {
+        System.out.println(id + "xxxxxxxxxxxxxxxxx");
+        counterService.deleteCounter(id);
+    }
+
     @GetMapping("all")
     public List<Counter> getCounters() {
         return counterService.getAllCounters();
