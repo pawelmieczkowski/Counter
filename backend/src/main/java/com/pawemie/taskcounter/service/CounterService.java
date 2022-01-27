@@ -21,6 +21,7 @@ public class CounterService {
 
     public Counter updateCounter(Long id) {
         Counter counter = counterRepository.getById(id);
+
         CounterEntry counterEntry = new CounterEntry();
         counterEntry.setDate(LocalDate.now());
         counterEntry.setCounterId(id);

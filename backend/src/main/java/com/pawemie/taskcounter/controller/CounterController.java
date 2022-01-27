@@ -20,7 +20,7 @@ public class CounterController {
     }
 
     @PutMapping("/{id}")
-public Counter updateCounter(@PathVariable Long id){
+    public Counter updateCounter(@PathVariable Long id) {
         return counterService.updateCounter(id);
     }
 

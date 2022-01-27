@@ -16,12 +16,14 @@ public class Counter {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private CounterType counterType;
     private Long count;
     private String color;
     private final LocalDateTime creationDate;
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "counter_id")
     private List<CounterEntry> counterEntries;
 
     public Counter() {
@@ -31,11 +33,9 @@ public class Counter {
 
     public void addCounterEntry(CounterEntry counterEntry) {
         Optional<CounterEntry> existingEntry = counterEntries.stream()
-                .filter(entry -> (entry
-                        .getCounterId()
+                .filter(entry -> (entry.getCounterId()
                         .equals(counterEntry.getCounterId()))
-                        && entry
-                        .getDate()
+                        && entry.getDate()
                         .equals(counterEntry.getDate()))
                 .findAny();
         existingEntry.

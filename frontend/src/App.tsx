@@ -6,10 +6,10 @@ import './App.css';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {Col, Container, Row} from "react-bootstrap";
 
-import {MainPage} from "./Pages/MainPage";
-import {MenuBar} from "./Components/MenuBar";
-import {TopBar} from "./Components/TopBar";
-import {CounterPage} from "./Pages/CounterPage";
+import {MainPage} from "./pages/MainPage";
+import {MenuBar} from "./components/MenuBar";
+import {TopBar} from "./components/TopBar";
+import {CounterPage} from "./pages/CounterPage";
 
 
 function App() {

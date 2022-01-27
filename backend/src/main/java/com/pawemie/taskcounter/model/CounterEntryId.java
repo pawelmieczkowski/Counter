@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -13,6 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class CounterEntryId implements Serializable {
     private LocalDate date;
+    @Column(name = "counter_id")
     private Long counterId;
 
     @Override
