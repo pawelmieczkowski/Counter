@@ -12,14 +12,13 @@ import {MenuBar} from "./components/MenuBar";
 import {TopBar} from "./components/TopBar";
 import {CounterPage} from "./pages/CounterPage";
 
-
 function App() {
     return (
         <Container fluid className={"vh-100"}>
             <Router>
                 <Row className="h-100">
                     <TopBar/>
-                    <Row style={{height: "calc(100% - 50px)", width:"100%", margin:"0", padding:"0"}}>
+                    <Row className={"g-0"} style={{height: "calc(100% - 65px)", width: "100%"}}>
                         <Col md={"2"} className="h-100 p-0">
                             <MenuBar/>
                         </Col>

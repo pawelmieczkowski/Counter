@@ -5,7 +5,7 @@ import './MenuBar.css'
 export const MenuBar = () => {
 
     return (
-        <Container className={"h-100 ps-0"} fluid style={{}}>
+        <Container className={"h-100 ps-0"} fluid>
             <Row>
                 <Navbar variant={"dark"} className={"ps-0"}>
                     <Nav className="flex-column w-100 h-100 lh-lg">

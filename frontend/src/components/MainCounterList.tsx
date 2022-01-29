@@ -1,3 +1,4 @@
+import "./MainCounterList.css"
 import React, {useState} from "react";
 import {ICounter} from "../pages/CounterPage";
 import {
@@ -14,8 +15,15 @@ import {
 
 export const MainCounterList = ({
                                     counters,
-                                    refresh
-                                }: { counters: ICounter[], refresh: React.Dispatch<React.SetStateAction<any>> }) => {
+                                    refresh,
+                                    selected,
+                                    setSelected
+                                }: {
+    counters: ICounter[],
+    refresh: React.Dispatch<React.SetStateAction<any>>
+    selected: ICounter,
+    setSelected: React.Dispatch<React.SetStateAction<ICounter>>
+}) => {
     const [formData, setFormData] = useState<ICounter>();
 
     const sendNewCounter = async () => {
@@ -56,8 +64,8 @@ export const MainCounterList = ({
     }
 
     const popover = (id: number | undefined) => (
-        <Popover>
-            <PopoverHeader>Settings</PopoverHeader>
+        <Popover style={{background: "lightgray"}}>
+            <PopoverHeader style={{background: "gray"}}>Settings</PopoverHeader>
             <PopoverBody>
                 <Button onClick={() => handleDeleteCounter(id)}>Delete counter</Button>
             </PopoverBody>
@@ -65,15 +73,26 @@ export const MainCounterList = ({
     )
 
     return (
-        <Container className={"w-100 py-4"} fluid style={{background: "#191c24", borderRadius: "5px"}}>
+        <Container className={"py-4 px-4 my-2"} fluid style={{background: "#191c24", borderRadius: "5px"}}>
             <Table responsive={true} borderless={false} style={{color: "white", borderColor: "#0f1015"}}>
                 <tbody>
                 {counters.map(c => (
-                    <tr key={c.id}>
+                    <tr key={c.id} className={"customTableRow"} style={selected.id === c.id ? {background: "#0f1015"} : {}}>
                         <td style={{background: c.color, width: 10}}>
                         </td>
-                        <td>
-                            {c.name}
+                        <td >
+                            <Button
+                                onClick={() => setSelected(c)}
+                                style={{
+                                    background: "transparent",
+                                    outline: "none",
+                                    boxShadow: "none",
+                                    border: "0",
+                                    width: "100%",
+                                    textAlign: "left"
+                                }}>
+                                {c.name}
+                            </Button>
                         </td>
                         <td>
                             {c.count}
