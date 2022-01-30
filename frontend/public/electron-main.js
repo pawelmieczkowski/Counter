@@ -3,17 +3,22 @@ const path = require('path');
 const {app, BrowserWindow, Menu} = require('electron');
 const isDev = require('electron-is-dev');
 
+let kill = require('tree-kill');
+
+
 Menu.setApplicationMenu(null)
 
 function createWindow() {
-    const win = new BrowserWindow({
+
+    let win = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
             nodeIntegration: true,
+            defaultEncoding: 'UTF-8'
         },
     });
-    
+
     win.loadURL(
         isDev
             ? 'http://localhost:3000'
@@ -23,7 +28,17 @@ function createWindow() {
     if (isDev) {
         win.webContents.openDevTools({mode: 'detach'});
     }
+
+    win.on('closed', function () {
+        kill(child.pid);
+        win = null
+    });
 }
+
+let jarPath = app.getAppPath() + '\\backendApp.jar';
+console.log(jarPath)
+let child = require('child_process').spawn(
+    'java', ['-jar', jarPath, '']);
 
 app.whenReady().then(createWindow);
 

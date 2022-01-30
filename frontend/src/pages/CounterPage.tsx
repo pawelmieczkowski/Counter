@@ -32,6 +32,9 @@ export const CounterPage = () => {
             method: 'GET'
         });
         let counters = await response.json();
+        if(counters.length < 1){
+            counters = [{id: 0, name: "a", description: ""}];
+        }
         setCounters(counters);
         refresh === "firstRender" ? setSelected(counters[0]) :
             setSelected(counters.filter((item: ICounter) => item.id === selected.id)[0])
@@ -59,5 +62,3 @@ export const CounterPage = () => {
         </Container>
     );
 }
-
-// counter={counters.filter(item => item.id === selected.id)[0]}
