@@ -24,9 +24,13 @@ public class CounterController {
         return counterService.updateCounter(id);
     }
 
+    @PutMapping("/modify")
+    public Counter modifyCounter(@RequestBody Counter counter) {
+        return counterService.modifyCounter(counter);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteCounter(@PathVariable Long id) {
-        System.out.println(id + "xxxxxxxxxxxxxxxxx");
         counterService.deleteCounter(id);
     }
 

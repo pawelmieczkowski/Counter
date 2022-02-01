@@ -5,13 +5,15 @@ import {
     Accordion,
     Button,
     Container,
-    Form,
+    Modal,
     OverlayTrigger,
     Popover,
     PopoverBody,
-    PopoverHeader,
+    PopoverHeader, Row,
     Table
 } from "react-bootstrap";
+
+import {CounterForm} from "./CounterForm";
 
 export const MainCounterList = ({
                                     counters,
@@ -25,6 +27,11 @@ export const MainCounterList = ({
     setSelected: React.Dispatch<React.SetStateAction<ICounter>>
 }) => {
     const [formData, setFormData] = useState<ICounter>();
+    const [showModal, setShowModal] = useState<number | undefined>(undefined);
+
+    const handleCloseModal = () => setShowModal(undefined);
+    const handleShowModal = (id: number | undefined) => setShowModal(id);
+
 
     const sendNewCounter = async () => {
         let response = await fetch('http://localhost:8080/api/v1/counters/', {
@@ -63,24 +70,57 @@ export const MainCounterList = ({
         refresh(await response);
     }
 
+    const handleModifyCounter = async (event: React.FormEvent<HTMLFormElement>) => {
+        let response = await fetch(`http://localhost:8080/api/v1/counters/modify`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: formData?.id,
+                name: formData?.name,
+                description: formData?.description,
+                color: formData?.color
+            }),
+        });
+        refresh(await response);
+    }
+
     const popover = (id: number | undefined) => (
         <Popover style={{background: "lightgray"}}>
             <PopoverHeader style={{background: "gray"}}>Settings</PopoverHeader>
             <PopoverBody>
-                <Button onClick={() => handleDeleteCounter(id)}>Delete counter</Button>
+                <Container>
+                    <Row>
+                        <Button className={"my-1"} onClick={() => handleShowModal(id)}>Edit Counter</Button>
+                        <Button className={"my-1"} onClick={() => handleDeleteCounter(id)}>Delete counter</Button>
+                    </Row>
+
+                </Container>
+
             </PopoverBody>
         </Popover>
     )
 
     return (
         <Container className={"py-4 px-4 my-2"} fluid style={{background: "#191c24", borderRadius: "5px"}}>
+            <Modal style={{zIndex: "9999"}} show={showModal !== undefined} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit counter</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <CounterForm handleSubmit={handleModifyCounter} formData={{...formData, id: showModal}}
+                                 setFormData={setFormData}/>
+                </Modal.Body>
+            </Modal>
             <Table responsive={true} borderless={false} style={{color: "white", borderColor: "#0f1015"}}>
                 <tbody>
                 {counters.map(c => (
-                    <tr key={c.id} className={"customTableRow"} style={selected.id === c.id ? {background: "#0f1015"} : {}}>
+                    <tr key={c.id} className={"customTableRow"}
+                        style={selected.id === c.id ? {background: "#0f1015"} : {}}>
                         <td style={{background: c.color, width: 10}}>
                         </td>
-                        <td >
+                        <td>
                             <Button
                                 onClick={() => setSelected(c)}
                                 style={{
@@ -120,34 +160,7 @@ export const MainCounterList = ({
                         borderColor: "#12151e",
                         borderWidth: "0 2px 2px 2px"
                     }}>
-                        <Form
-                            onSubmit={event => handleSubmit(event as any)}>
-                            <Form.Group className="mb-3" controlId="name">
-                                <Form.Label>New Counter name</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Counter name..."
-                                    onChange={e => setFormData({...formData, name: e.target.value})}
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="description">
-                                <Form.Label>Description</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Description..."
-                                    onChange={e => setFormData({...formData, description: e.target.value})}
-                                />
-                            </Form.Group>
-                            <Form.Group controlId="color">
-                                <Form.Label>Choose Color of a Counter</Form.Label>
-                                <Form.Control
-                                    type="color"
-                                    title="Choose your color"
-                                    onChange={e => setFormData({...formData, color: e.target.value})}
-                                />
-                            </Form.Group>
-                            <Button className={"my-2 btn-primary"} type="submit">Submit form</Button>
-                        </Form>
+                        <CounterForm handleSubmit={handleSubmit} formData={formData} setFormData={setFormData}/>
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>

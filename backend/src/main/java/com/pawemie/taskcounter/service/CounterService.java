@@ -36,7 +36,20 @@ public class CounterService {
         return counterRepository.findAll();
     }
 
-    public void deleteCounter(Long id){
+    public void deleteCounter(Long id) {
         counterRepository.deleteById(id);
+    }
+
+    public Counter modifyCounter(Counter counter) {
+        if (counter.getId() == null) {
+            throw new IllegalArgumentException("id is missing");
+        }
+        Counter modifiedCounter = counterRepository.getById(counter.getId());
+
+        if (counter.getName() != null) modifiedCounter.setName(counter.getName());
+        if (counter.getDescription() != null) modifiedCounter.setDescription(counter.getDescription());
+        if (counter.getColor() != null) modifiedCounter.setColor(counter.getColor());
+
+        return counterRepository.save(modifiedCounter);
     }
 }
